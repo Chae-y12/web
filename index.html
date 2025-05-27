@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 패션 코디 추천</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; background: #f9f9f9; padding: 2rem; max-width: 700px; margin: auto; }
+    h1 { color: #4A3AFF; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 0.3rem; font-weight: bold; }
+    input, select { width: 100%; padding: 0.5rem; }
+    button { background-color: #4A3AFF; color: white; padding: 0.7rem 1.5rem; border: none; cursor: pointer; }
+    #result { margin-top: 2rem; background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    img { max-width: 100%; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>AI 패션 코디 추천</h1>
+  <form id="fashion-form">
+    <div class="form-group">
+      <label>성별</label>
+      <select id="gender">
+        <option value="여성">여성</option>
+        <option value="남성">남성</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>스타일</label>
+      <input type="text" id="style" placeholder="예: 스트릿, 모던, 페미닌">
+    </div>
+    <div class="form-group">
+      <label>계절</label>
+      <input type="text" id="season" placeholder="봄, 여름, 가을, 겨울">
+    </div>
+    <div class="form-group">
+      <label>선호 색상</label>
+      <input type="text" id="color" placeholder="예: 라벤더, 블랙">
+    </div>
+    <div class="form-group">
+      <label>키 (cm)</label>
+      <input type="number" id="height" value="165">
+    </div>
+    <div class="form-group">
+      <label>몸무게 (kg)</label>
+      <input type="number" id="weight" value="55">
+    </div>
+    <button type="submit">코디 추천 받기</button>
+  </form>
+
+  <div id="result" style="display:none">
+    <h2>추천 코디 결과</h2>
+    <p id="summary"></p>
+    <img id="image" src="" alt="추천 이미지">
+    <p><small id="timestamp"></small></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('fashion-form');
+    const result = document.getElementById('result');
+    const summary = document.getElementById('summary');
+    const image = document.getElementById('image');
+    const timestamp = document.getElementById('timestamp');
+
+    const sampleTrends = ["Y2K", "에코패션", "스트릿웨어", "라벤더", "플로럴", "복고풍"];
+    const imageMap = {
+      "라벤더": "https://raw.githubusercontent.com/angeloyeo/fashion-ai-demo/main/img/lavender_여성.jpg",
+      "Y2K": "https://raw.githubusercontent.com/angeloyeo/fashion-ai-demo/main/img/y2k_여성.jpg",
+      "스트릿웨어": "https://raw.githubusercontent.com/angeloyeo/fashion-ai-demo/main/img/street_여성.jpg",
+      "에코패션": "https://raw.githubusercontent.com/angeloyeo/fashion-ai-demo/main/img/eco_여성.jpg",
+      "복고풍": "https://cdn.imweb.me/upload/S202208023292e9d9dc224/f07108fa3c302ff628f6d880b2f2ef94.jpg",
+      "플로럴": "https://img.musinsa.com/images/cate/202303/longskirt.jpg"
+    };
+
+    form.onsubmit = function(e) {
+      e.preventDefault();
+
+      const gender = document.getElementById('gender').value;
+      const style = document.getElementById('style').value;
+      const season = document.getElementById('season').value;
+      const color = document.getElementById('color').value;
+      const height = parseInt(document.getElementById('height').value);
+      const weight = parseInt(document.getElementById('weight').value);
+
+      const trend = sampleTrends[Math.floor(Math.random() * sampleTrends.length)];
+      const top = `${trend} 스타일 ${color} 블라우스`;
+      let bottom = height < 160 ? "미디 플레어 스커트" : (height > 175 ? "롱 데님 팬츠" : "기본 슬랙스");
+      let accessory = weight >= 80 ? "오버사이즈 숄더백" : "미니 크로스백";
+      const img = imageMap[trend] || imageMap["Y2K"];
+
+      summary.innerText = `Top: ${top}\nBottom: ${bottom}\nAccessory: ${accessory}\nTrend: ${trend}`;
+      image.src = img;
+      timestamp.innerText = `추천 시각: ${new Date().toLocaleString()}`;
+
+      result.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
